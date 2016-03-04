@@ -17,4 +17,27 @@ You can mount volumes into the `/data` directory.
 I.e.
 ``docker run -it -v `pwd`/myData:/data tghs/cli
 ``
-## 
+
+## Setting UID and GID
+
+Give docker the variables `USER_ID` and `GROUP_ID`.
+
+With `docker`:
+
+```
+docker run -it -v `pwd`/mydata:/data -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) tghs/cli
+```
+
+With `docker-compose`:
+
+```
+services:
+    cli:
+        image: tghs/cli
+        volume: ./mydata:/data
+        environment:
+            - USER_ID=123
+            - GROUP_ID=456
+```
+
+No, we can't use simple variable subtitutions here. We have a script that fills this in with `envsubst`.
